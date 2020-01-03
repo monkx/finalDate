@@ -8,12 +8,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 from wordcloud import WordCloud
 
-months = ['january','february','march','april','may','june','july','august','september','october'.'november','december','jan','feb','aug','sept','nov','oct','dec']
+months = ['january','february','march','april','may','june','july','august','september','october','november','december','jan','feb','aug','sept','nov','oct','dec']
 
 df = pd.read_csv('./spam.csv', encoding='ISO-8859-1')
-
+#stop words
+stop = set(stopwords.words('english')) 
+stop.discard('before')
+stop.discard('after')
+stop.discard('last')
 # drop unnecessary columns
 df = df.drop(["Unnamed: 2", "Unnamed: 3", "Unnamed: 4"], axis=1)
 
@@ -23,7 +29,9 @@ df.columns = ['labels', 'data']
 # create binary labels
 df['b_labels'] = df['labels'].map({'ded': 1, 'nd': 0})
 Y = df['b_labels'].values
-
+df['data'] = df['data'].map(lambda s:s.lower())
+df['data'].apply(lambda x: [item for item in x if item not in stop])
+print(stop)
 # split up the data
 df_train, df_test, Ytrain, Ytest = train_test_split(df['data'], Y, test_size=0.05)
 

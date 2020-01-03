@@ -10,6 +10,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from wordcloud import WordCloud
 
+months = ['january','february','march','april','may','june','july','august','september','october'.'november','december','jan','feb','aug','sept','nov','oct','dec']
 
 df = pd.read_csv('./spam.csv', encoding='ISO-8859-1')
 
